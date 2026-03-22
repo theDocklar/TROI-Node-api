@@ -52,14 +52,14 @@ router.get('/connect', authMiddleware, (req, res) => {
 
 // ─────────────────────────────────────────────────────────────────────────────
 // POST /api/shopify/callback
-// Body: { shop, code, hmac, state, timestamp }
+// Body: all params Shopify sent in the redirect URL (shop, code, hmac, state, timestamp, host, etc.)
 // Verifies HMAC + state, exchanges code for access token, stores Shop doc
 // ─────────────────────────────────────────────────────────────────────────────
 router.post('/callback', authMiddleware, async (req, res) => {
   try {
     const { shop, code, hmac, state, timestamp } = req.body;
 
-    if (!shop || !code || !hmac || !state || !timestamp) {
+    if (!shop || !code || !hmac || !state) {
       return res.status(400).json({ message: 'Missing required OAuth params' });
     }
 
@@ -80,8 +80,8 @@ router.post('/callback', authMiddleware, async (req, res) => {
       return res.status(400).json({ message: 'Invalid OAuth state' });
     }
 
-    // Verify timestamp (must be within 10 minutes)
-    if (Date.now() / 1000 - parseInt(timestamp) > 600) {
+    // Verify timestamp if present (must be within 10 minutes)
+    if (timestamp && Date.now() / 1000 - parseInt(timestamp) > 600) {
       return res.status(400).json({ message: 'OAuth request expired' });
     }
 
