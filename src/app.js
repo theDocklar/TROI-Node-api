@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const authRoutes = require('./routes/auth');
 const shopifyRoutes = require('./routes/shopify');
+const metaRoutes = require('./routes/meta');
 
 const app = express();
 
@@ -14,5 +15,6 @@ app.get('/health', (req, res) => {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/shopify', shopifyRoutes);
+app.use('/api/meta', metaRoutes);
 
 module.exports = app;
