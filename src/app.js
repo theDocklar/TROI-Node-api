@@ -3,6 +3,7 @@ const cors = require('cors');
 const authRoutes = require('./routes/auth');
 const shopifyRoutes = require('./routes/shopify');
 const metaRoutes = require('./routes/meta');
+const googleRoutes = require('./routes/google');
 
 const app = express();
 
@@ -16,5 +17,6 @@ app.get('/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/shopify', shopifyRoutes);
 app.use('/api/meta', metaRoutes);
+app.use('/api/google', googleRoutes);
 
 module.exports = app;
